@@ -1,0 +1,11 @@
+language: java
+jdk: oraclejdk11
+
+script: mvn -e verify
+
+notifications:
+  email:
+    recipients:
+      - almir.almiev@tatar.ru
+    on_failure: always
+    on_success: change
