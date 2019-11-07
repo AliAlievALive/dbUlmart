@@ -1,7 +1,6 @@
 package ru.itpark.servlet;
 
 import ru.itpark.service.ShopService;
-import ru.itpark.service.FileService;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -14,7 +13,6 @@ import java.sql.SQLException;
 
 public class CatalogServlet extends HttpServlet {
     private ShopService shopService;
-    private FileService fileService;
 
     @Override
     public void init() throws ServletException {
@@ -22,7 +20,6 @@ public class CatalogServlet extends HttpServlet {
         try {
             context = new InitialContext();
             shopService = (ShopService) context.lookup("java:/comp/env/bean/shop-service");
-            fileService = (FileService) context.lookup("java:/comp/env/bean/file-service");
         } catch (NamingException e) {
             e.printStackTrace();
             throw new ServletException(e);
@@ -42,18 +39,9 @@ public class CatalogServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            var login = req.getParameter("login");
-            var name = req.getParameter("name");
-            var part = req.getPart("image");
+        var login = req.getParameter("login");
+        var name = req.getParameter("name");
 
-            var image = fileService.writeFile(part);
-
-            shopService.create(login, name, image);
-            resp.sendRedirect(String.join("/", req.getContextPath(), req.getServletPath()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException(e);
-        }
+        resp.sendRedirect(String.join("/", req.getContextPath(), req.getServletPath()));
     }
 }
