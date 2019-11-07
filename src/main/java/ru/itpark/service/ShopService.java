@@ -15,7 +15,7 @@ public class ShopService {
 
     public ShopService() throws NamingException, SQLException {
         var context = new InitialContext();
-        ds = (DataSource) context.lookup("java:/comp/env/jdbc/db");
+        ds = (DataSource) context.lookup("java:/comp/env/jdbc/db.sql");
         try (var conn = ds.getConnection()) {
             try (var stmt = conn.createStatement()){
                 stmt.execute("CREATE TABLE IF NOT EXISTS products (" +
@@ -27,7 +27,7 @@ public class ShopService {
                         "price NOT NULL CHECK ( price > 0 ));"
                 );
 
-                stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, login TEXT NOT NULL, name TEXT NOT NULL);"
+                stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, login TEXT NOT NULL, name TEXT NOT NULL, image TEXT);"
                 );
 
                 stmt.execute("CREATE TABLE orders (\n" +
@@ -45,14 +45,15 @@ public class ShopService {
     public List<Users> getAll() throws SQLException {
         try (var conn = ds.getConnection()) {
             try (var stmt = conn.createStatement()) {
-                try (var rs = stmt.executeQuery("SELECT id, login, name FROM users;")) {
+                try (var rs = stmt.executeQuery("SELECT id, login, name, image FROM users;")) {
                     var list = new ArrayList<Users>();
 
                     while (rs.next()) {
                         list.add(new Users(
                                 rs.getString("id"),
                                 rs.getString("login"),
-                                rs.getString("name")
+                                rs.getString("name"),
+                                rs.getString("image")
                         ));
                     }
                     return list;
@@ -61,12 +62,13 @@ public class ShopService {
         }
     }
 
-    public void create(String login, String name) throws SQLException {
+    public void create(String login, String name, String image) throws SQLException {
         try (var conn = ds.getConnection()) {
-            try (var stmt = conn.prepareStatement("INSERT INTO users (id, login, name) VALUES (?, ?, ?)")) {
+            try (var stmt = conn.prepareStatement("INSERT INTO users (id, login, name, image) VALUES (?, ?, ?, ?)")) {
                 stmt.setString(1, UUID.randomUUID().toString());
                 stmt.setString(2, login);
                 stmt.setString(3, name);
+                stmt.setString(4, image);
                 stmt.execute();
             }
         }
