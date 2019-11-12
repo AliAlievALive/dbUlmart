@@ -1,4 +1,4 @@
-package ru.itpark.domain;
+package ru.itpark.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
