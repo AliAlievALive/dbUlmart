@@ -18,8 +18,7 @@ CREATE TABLE orders (
     name TEXT NOT NULL,
     product_cost INTEGER,
     user_id REFERENCES users,
-    product_id REFERENCES products,
-    total_cost INTEGER
+    product_id REFERENCES products
 );
 
 INSERT INTO users
