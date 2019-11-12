@@ -3,7 +3,7 @@ CREATE TABLE products (
     name TEXT NOT NULL,
     category TEXT,
     count INTEGER CHECK ( count >= 0 ),
-    status TEXT DEFAULT 'Make buy',
+    status TEXT CHECK( status IN ('Make buy','not available') ) NOT NULL DEFAULT 'Make buy',
     price INTEGER NOT NULL CHECK ( price > 0 ));
 
 CREATE TABLE users (
