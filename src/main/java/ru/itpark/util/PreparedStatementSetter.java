@@ -1,4 +1,4 @@
-package ru.itpark.service.util;
+package ru.itpark.util;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

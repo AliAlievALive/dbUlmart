@@ -2,9 +2,9 @@ package ru.itpark.service;
 
 import ru.itpark.exception.DataStoreException;
 import ru.itpark.exception.NoGeneratedKeysException;
-import ru.itpark.service.util.PreparedStatementExecutor;
-import ru.itpark.service.util.PreparedStatementSetter;
-import ru.itpark.service.util.RowMapper;
+import ru.itpark.util.PreparedStatementExecutor;
+import ru.itpark.util.PreparedStatementSetter;
+import ru.itpark.util.RowMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
