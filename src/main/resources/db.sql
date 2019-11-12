@@ -17,7 +17,7 @@ CREATE TABLE orders (
     count INTEGER CHECK ( count > 0 ),
     name TEXT NOT NULL,
     product_cost INTEGER,
-    users_id REFERENCES users,
+    user_id REFERENCES users,
     product_id REFERENCES products,
     total_cost INTEGER
 );
