@@ -1,4 +1,4 @@
-<%@ page import="ru.itpark.domain.Users" %>
+<%@ page import="ru.itpark.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
@@ -19,7 +19,7 @@
 
             <div class="row">
                 <% if (request.getAttribute("items") != null) { %>
-                <% for (Users item : (List<Users>) request.getAttribute("items")) { %>
+                <% for (User item : (List<User>) request.getAttribute("items")) { %>
                 <div class="col-sm-6 mt-3">
                     <div class="card">
                         <img src="<%= request.getContextPath() %>/images/<%= item.getImage()%>" class="card-img-top" alt="<%= item.getName()%>">

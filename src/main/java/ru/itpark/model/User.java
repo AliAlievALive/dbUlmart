@@ -1,19 +1,17 @@
-package ru.itpark.domain;
+package ru.itpark.model;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class Users {
+public class User {
     private String id;
     private String login;
     private String name;
-    private String image;
 
-    public Users(String id, String login, String name, String image) {
+    public User(String id, String login, String name, String image) {
         this.id = id;
         this.login = login;
         this.name = name;
-        this.image = image;
     }
 
     public String getId() {
@@ -38,13 +36,5 @@ public class Users {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

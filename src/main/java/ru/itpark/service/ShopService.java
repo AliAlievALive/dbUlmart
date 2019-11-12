@@ -1,6 +1,6 @@
 package ru.itpark.service;
 
-import ru.itpark.domain.Users;
+import ru.itpark.model.User;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -42,18 +42,17 @@ public class ShopService {
         }
     }
 
-    public List<Users> getAll() throws SQLException {
+    public List<User> getAll() throws SQLException {
         try (var conn = ds.getConnection()) {
             try (var stmt = conn.createStatement()) {
-                try (var rs = stmt.executeQuery("SELECT id, login, name, image FROM users;")) {
-                    var list = new ArrayList<Users>();
+                try (var rs = stmt.executeQuery("SELECT id, login, name FROM users;")) {
+                    var list = new ArrayList<User>();
 
                     while (rs.next()) {
-                        list.add(new Users(
+                        list.add(new User(
                                 rs.getString("id"),
                                 rs.getString("login"),
-                                rs.getString("name"),
-                                rs.getString("image")
+                                rs.getString("name")
                         ));
                     }
                     return list;
@@ -64,11 +63,10 @@ public class ShopService {
 
     public void create(String login, String name, String image) throws SQLException {
         try (var conn = ds.getConnection()) {
-            try (var stmt = conn.prepareStatement("INSERT INTO users (id, login, name, image) VALUES (?, ?, ?, ?)")) {
+            try (var stmt = conn.prepareStatement("INSERT INTO users (id, login, name) VALUES (?, ?, ?)")) {
                 stmt.setString(1, UUID.randomUUID().toString());
                 stmt.setString(2, login);
                 stmt.setString(3, name);
-                stmt.setString(4, image);
                 stmt.execute();
             }
         }
