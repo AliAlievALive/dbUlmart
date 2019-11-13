@@ -1,74 +1,27 @@
 package ru.itpark.service;
 
-import ru.itpark.model.User;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.sql.*;
 
 public class ShopService {
-    private final DataSource ds;
 
-    public ShopService() throws NamingException, SQLException {
-        var context = new InitialContext();
-        ds = (DataSource) context.lookup("java:/comp/env/jdbc/db.sql");
-        try (var conn = ds.getConnection()) {
-            try (var stmt = conn.createStatement()){
-                stmt.execute("CREATE TABLE IF NOT EXISTS products (" +
-                        "id TEXT PRIMARY KEY, " +
-                        "name TEXT NOT NULL, " +
-                        "category TEXT NOT NULL, " +
-                        "count INTEGER NOT NULL CHECK ( count >= 0 ), " +
-                        "status TEXT NOT NULL, " +
-                        "price NOT NULL CHECK ( price > 0 ));"
-                );
-
-                stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, login TEXT NOT NULL, name TEXT NOT NULL, image TEXT);"
-                );
-
-                stmt.execute("CREATE TABLE orders (\n" +
-                        "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                        "    count INTEGER CHECK ( count > 0 ),\n" +
-                        "    name TEXT NOT NULL,\n" +
-                        "    product_cost INTEGER,\n" +
-                        "    total_cost INTEGER," +
-                        "    status INTEGER NOT NULL CHECK ( status >= 0 ));"
-                );
-            }
-        }
+    private Connection getNewConnection(String url) throws SQLException {
+        String user = "sa";
+        String password = "sa";
+        return DriverManager.getConnection(url, user, password);
     }
 
-    public List<User> getAll() throws SQLException {
-        try (var conn = ds.getConnection()) {
-            try (var stmt = conn.createStatement()) {
-                try (var rs = stmt.executeQuery("SELECT id, login, name FROM users;")) {
-                    var list = new ArrayList<User>();
-
-                    while (rs.next()) {
-                        list.add(new User(
-                                rs.getString("id"),
-                                rs.getString("login"),
-                                rs.getString("name")
-                        ));
-                    }
-                    return list;
-                }
-            }
-        }
+    private int executeUpdate(String url, String query) throws SQLException {
+        Statement statement = getNewConnection(url).createStatement();
+        return statement.executeUpdate(query);
     }
 
-    public void create(String login, String name, String image) throws SQLException {
-        try (var conn = ds.getConnection()) {
-            try (var stmt = conn.prepareStatement("INSERT INTO users (id, login, name) VALUES (?, ?, ?)")) {
-                stmt.setString(1, UUID.randomUUID().toString());
-                stmt.setString(2, login);
-                stmt.setString(3, name);
-                stmt.execute();
-            }
-        }
+    private void createUsersTable() throws SQLException {
+        String url = "java:/comp/env/jdbc/db.sql";
+        String usersTableQuery = "CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, login TEXT NOT NULL, " +
+                "name TEXT NOT NULL, image TEXT);";
+        String usersEntryQuery = "INSERT INTO users " +
+                "VALUES (1, 'user1', '123'), (2, 'user2', '321'), (3, 'user3', '111'), (4, 'user4', '222');";
+        executeUpdate(url, usersTableQuery);
+        executeUpdate(url, usersEntryQuery);
     }
 }
