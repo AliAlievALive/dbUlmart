@@ -10,9 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    private List<Product> products;
+    private Product product;
     private int count;
-    private String name;
     private int price;
-    private int sumPrice;
 }

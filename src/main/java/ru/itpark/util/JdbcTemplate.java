@@ -1,4 +1,4 @@
-package ru.itpark.service;
+package ru.itpark.util;
 
 import ru.itpark.exception.DataStoreException;
 import ru.itpark.exception.NoGeneratedKeysException;
@@ -41,8 +41,6 @@ public class JdbcTemplate {
         return result;
       }
     });
-
-
   }
 
   public <T> Optional<T> executeQueryForObject(
