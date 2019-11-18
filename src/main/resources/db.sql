@@ -10,7 +10,7 @@ CREATE TABLE products (
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     login TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    name TEXT NOT NULL
 );
 
 CREATE TABLE orders (
@@ -21,17 +21,30 @@ CREATE TABLE orders (
     status TEXT CHECK( status IN ('Bought','Not bought') ) NOT NULL DEFAULT 'Bought'
 );
 
-INSERT INTO users
-VALUES (1, 'user1', '123'),
-       (2, 'user2', '321'),
-       (3, 'user3', '111'),
-       (4, 'user4', '222');
+CREATE TABLE sales
+(
+    orders_id INTEGER REFERENCES orders (id),
+    productId INTEGER REFERENCES products (id),
+    number    INTEGER NOT NULL CHECK ( number > 0 )
+);
 
-INSERT INTO products VALUES (1, 'iPhone', 'Phones', 5, '', 100000),
-       (2, 'Xiaomi', 'Phones', 2, '', 20000),
-       (3, 'LG', 'TVs', 1, '', 15000),
-       (4, 'Samsung', 'TVs', 0, '', 200000),
-       (5, 'Philips', 'PC', 4, '', 19000);
+INSERT INTO users
+VALUES ('user1', 'user123'),
+       ('user2', 'user321'),
+       ('user3', 'user111'),
+       ('user4', 'user222');
+
+INSERT INTO products
+VALUES ('iPhone', 'Phones', 5, '', 100000),
+       ('Xiaomi', 'Phones', 2, '', 20000),
+       ('LG', 'TVs', 1, '', 15000),
+       ('Samsung', 'TVs', 0, '', 200000),
+       ('Philips', 'PC', 4, '', 19000);
 
 INSERT INTO orders
 VALUES (1, 2, 'iPhone', 100000, 'Bought');
+
+INSERT INTO sales(orders_id, productId, number)
+VALUES (1, 1, 1),
+       (1, 3, 2),
+       (1, 5, 3);

@@ -13,10 +13,11 @@ import java.util.Optional;
 public class OrdersRepositoryJdbcImpl implements CrudRepository<Orders, Integer> {
   private final String url;
   private final JdbcTemplate jdbcTemplate;
+    private int orderNumber = 1;
 
   @Override
   public Orders create(Orders orders) {
-    String sql = "INSERT INTO orders (count, name, product_cost, status) VALUES (?, ?, ?, ?);";
+    String sql = "CREATE TABLE " + orderNumber++ + " INSERT INTO orders (count, name, product_cost, status) VALUES (?, ?, ?, ?);";
     for (Order order : orders.getOrders()) {
 
     }
@@ -33,7 +34,7 @@ public class OrdersRepositoryJdbcImpl implements CrudRepository<Orders, Integer>
   }
 
   @Override
-  public Product updateById(Product product) {
+  public Order updateById(Product product) {
     String sql = "UPDATE products SET name = ?, category = ?, count = ?, price = ? WHERE id = ?;";
     jdbcTemplate.executeUpdate(url, sql, stmt -> {
       stmt.setString(1, product.getName());
