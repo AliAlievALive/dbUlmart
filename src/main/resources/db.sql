@@ -3,7 +3,7 @@ CREATE TABLE products (
     name TEXT NOT NULL,
     category TEXT,
     count INTEGER CHECK ( count >= 0 ),
-    status TEXT CHECK( status IN ('Make buy','not available') ) NOT NULL DEFAULT 'Make buy',
+    status TEXT CHECK( status IN ('MAKE BUY','NOT AVAILABLE') ) NOT NULL DEFAULT 'MAKE BUY',
     price INTEGER NOT NULL CHECK ( price > 0 )
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE orders (
     count INTEGER CHECK ( count > 0 ),
     name TEXT NOT NULL,
     product_cost INTEGER,
-    status TEXT CHECK( status IN ('Bought','Not bought') ) NOT NULL DEFAULT 'Bought'
+    status TEXT CHECK( status IN ('BOUGHT','NOT BOUGHT') ) NOT NULL DEFAULT 'BOUGHT'
 );
 
 CREATE TABLE sales
@@ -42,7 +42,7 @@ VALUES ('iPhone', 'Phones', 5, '', 100000),
        ('Philips', 'PC', 4, '', 19000);
 
 INSERT INTO orders
-VALUES (1, 2, 'iPhone', 100000, 'Bought');
+VALUES (1, 2, 'iPhone', 100000, 'BOUGHT');
 
 INSERT INTO sales(orders_id, productId, number)
 VALUES (1, 1, 1),
