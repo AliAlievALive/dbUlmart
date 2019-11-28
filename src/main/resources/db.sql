@@ -24,7 +24,7 @@ CREATE TABLE orders (
 CREATE TABLE sales
 (
     orders_id INTEGER REFERENCES orders (id),
-    productId INTEGER REFERENCES products (id),
+    product_id INTEGER REFERENCES products (id),
     number    INTEGER NOT NULL CHECK ( number > 0 )
 );
 
